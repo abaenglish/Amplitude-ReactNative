@@ -2,7 +2,21 @@ buildscript {
     if (project == rootProject) {
         repositories {
             google()
-            jcenter()
+            maven {
+                // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+                url("../react-native/android")
+            }
+            maven {
+                // Android JSC is installed from npm
+                url("../jsc-android/dist")
+            }
+            mavenCentral {
+                // We don't want to fetch react-native from Maven Central as there are
+                // older versions over there.
+                content {
+                    excludeGroup "com.facebook.react"
+                }
+            }
         }
 
         dependencies {
@@ -43,17 +57,26 @@ android {
 }
 
 repositories {
-    mavenLocal()
+    google()
     maven {
         // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-        url("$rootDir/../node_modules/react-native/android")
+        url("../react-native/android")
     }
-    google()
-    jcenter()
+    maven {
+        // Android JSC is installed from npm
+        url("../jsc-android/dist")
+    }
+    mavenCentral {
+        // We don't want to fetch react-native from Maven Central as there are
+        // older versions over there.
+        content {
+            excludeGroup "com.facebook.react"
+        }
+    }
 }
 
 dependencies {
     //noinspection GradleDynamicVersion
-    implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation "com.facebook.react:react-native:0.67.4"  // From node_modules
     implementation "com.amplitude:android-sdk:2.38.2"
 }
